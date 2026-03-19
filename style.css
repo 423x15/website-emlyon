@@ -1,20 +1,47 @@
-h1{
-    color: #1111FF;
+/* 
+    This is a comment 
+
+    UTILITY CLASSES
+    These classes can be applied to any element to change its color.
+    
+*/
+
+.flex-row-space-between{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-
-.red{
-    color: #FF0000;
+ul {
+    list-style: none;
+    gap: 1em;
+    font-family: 'Iosevka Charon', sans-serif;
+    font-size: 1em;
 }
 
-.blue{
-    color: #0000FF;
+li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;   
 }
 
-.green{
-    color: #00FF00;
+h1 {
+    font-family: 'Iosevka Charon', sans-serif;
+    font-size: 3em;
+    text-transform: uppercase;
+    color: #333;
+}   
+h2 {
+    font-family: 'Iosevka Charon', sans-serif;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    color: #111;
 }
 
-.yellow{
-    color: #989803;
-}
+h2:hover{
+    font-family: 'Iosevka Charon', sans-serif;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    transition: color 0.5s;
+    color: green;
+}   
