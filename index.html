@@ -1,39 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- this is a comment -->
-    <link rel="stylesheet" href="style.css">
-    
+    <title>SNEAK. - Shoes Gallery</title>
+
+    <!-- Google Fonts : Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Iosevka+Charon:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <nav class="flex-row-space-between">
+    <!-- BARRE DE NAVIGATION -->
+    <nav class="navbar">
 
-        <h1>Shoes Gallery</h1>
-        <ul class="flex-row-space-between">
+        <!-- Logo à gauche -->
+        <div class="logo">SNEAK.</div>
+
+        <!-- Liens de navigation au centre -->
+        <ul class="nav-links">
             <li>Men</li>
             <li>Women</li>
-            <li>Brands</li>
-            <li>Cart <i data-lucide="shopping-cart"></i></li>
+            <li>Kids</li>
+            <li class="active">Deals</li>
         </ul>
+
+        <!-- Icônes à droite -->
+        <div class="nav-icons">
+            <i data-lucide="search"></i>
+            <i data-lucide="shopping-bag"></i>
+        </div>
+
     </nav>
 
-    <button popovertarget="my-popup">click me</button>
-        
-        <div popover id="my-popup">
-            <p>coucou</p>
+    <!-- CONTENU PRINCIPAL -->
+    <main>
+
+        <!-- Titre de la page -->
+        <h1 class="page-title">Shoes Gallery</h1>
+
+        <!-- Zone à deux colonnes : sidebar + produits -->
+        <div class="content-layout">
+
+            <!-- ===== SIDEBAR FILTRES ===== -->
+            <aside class="sidebar">
+
+                <!-- Filtre : Tri -->
+                <div class="filter-section">
+                    <h3 class="filter-title">
+                        Sort by
+                        <i data-lucide="chevron-down"></i>
+                    </h3>
+                    <label class="filter-option">
+                        <input type="radio" name="sort" value="low-high">
+                        Price Low to High
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="sort" value="high-low">
+                        Price High to Low
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="sort" value="newest" checked>
+                        Newest Arrivals
+                    </label>
+                </div>
+
+                <!-- Filtre : Marques -->
+                <div class="filter-section">
+                    <h3 class="filter-title">
+                        Brands
+                        <i data-lucide="chevron-down"></i>
+                    </h3>
+                    <label class="filter-option">
+                        <input type="checkbox" checked>
+                        Brand Alpha
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox">
+                        Urban Co.
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox">
+                        Arctic Wear
+                    </label>
+                </div>
+
+                <!-- Filtre : Tailles -->
+                <div class="filter-section">
+                    <h3 class="filter-title">
+                        Sizes
+                        <i data-lucide="chevron-down"></i>
+                    </h3>
+                </div>
+
+            </aside>
+
+            <!-- GRILLE PRODUITS -->
+            <section class="products-section">
+
+                <!-- En-tête de la grille -->
+                <div class="products-header">
+                    <h2>All our shoes</h2>
+                    <span class="results-count">1,032 results</span>
+                </div>
+
+                <!-- Grille des cartes produit -->
+                <div class="product-grid">
+
+                    <!-- Carte produit -->
+                    <div class="product-card">
+
+                        <!-- Image du produit -->
+                        <div class="product-image-container">
+                            <img
+                                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+                                alt="Image de chaussure rouge"
+                                class="product-image"
+                            >
+                            <!-- Bouton favori (coeur) -->
+                            <button class="wishlist-btn">
+                                <i data-lucide="heart"></i>
+                            </button>
+                        </div>
+
+                        <!-- Infos produit -->
+                        <div class="product-info">
+                            <span class="product-brand">RUNNER CO.</span>
+                            <h3 class="product-name">Speedster Red</h3>
+                            <span class="product-price">99.90 €</span>
+                        </div>
+
+                    </div>
+                    <!-- Fin carte produit -->
+
+                </div>
+                <!-- Fin grille -->
+
+            </section>
+
         </div>
-        <h2>My level title is 2</h2>
-     <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    lucide.createIcons();
-  </script>
+        <!-- Fin content-layout -->
+
+    </main>
+
+    <!-- Initialisation des icônes Lucide -->
+    <script>lucide.createIcons();</script>
+
 </body>
 </html>

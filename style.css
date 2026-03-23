@@ -1,47 +1,268 @@
-/* 
-    This is a comment 
-
-    UTILITY CLASSES
-    These classes can be applied to any element to change its color.
-    
-*/
-
-.flex-row-space-between{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-ul {
-    list-style: none;
-    gap: 1em;
-    font-family: 'Iosevka Charon', sans-serif;
-    font-size: 1em;
-}
-
-li {
-    display: flex;
-    flex-direction: row;
-    align-items: center;   
-}
-
-h1 {
-    font-family: 'Iosevka Charon', sans-serif;
-    font-size: 3em;
-    text-transform: uppercase;
-    color: #333;
-}   
-h2 {
-    font-family: 'Iosevka Charon', sans-serif;
-    font-size: 1.5em;
-    text-transform: uppercase;
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f5f5f5;
     color: #111;
 }
 
-h2:hover{
-    font-family: 'Iosevka Charon', sans-serif;
-    font-size: 1.5em;
-    text-transform: uppercase;
-    transition: color 0.5s;
-    color: green;
-}   
+/* NAVBAR */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 0 40px;
+    height: 64px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+/* Logo */
+.logo {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: #111;
+}
+
+/* Liste des liens nav */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 32px;
+}
+
+.nav-links li {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    padding-bottom: 4px;
+}
+
+/* Lien actif : souligné en bleu */
+.nav-links li.active {
+    color: #3b5bdb;
+    border-bottom: 2px solid #3b5bdb;
+}
+
+.nav-links li:hover {
+    color: #111;
+}
+
+/* Icônes search + panier */
+.nav-icons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    color: #555;
+}
+
+.nav-icons i {
+    cursor: pointer;
+    width: 22px;
+    height: 22px;
+}
+
+.nav-icons i:hover {
+    color: #111;
+}
+
+
+/* CONTENU PRINCIPAL */
+
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Titre de la page */
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 32px;
+    color: #111;
+}
+
+/* Mise en page à deux colonnes : sidebar + produits */
+.content-layout {
+    display: flex;
+    gap: 40px;
+}
+
+
+/* SIDEBAR FILTRES (colonne gauche) */
+.sidebar {
+    width: 220px;
+    flex-shrink: 0; /* ne rétrécit pas */
+}
+
+/* Section de filtre */
+.filter-section {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Titre de chaque filtre */
+.filter-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 14px;
+    cursor: pointer;
+}
+
+.filter-title i {
+    width: 16px;
+    height: 16px;
+    color: #555;
+}
+
+/* Chaque option radio/checkbox */
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #444;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.filter-option:hover {
+    color: #111;
+}
+
+.filter-option input {
+    cursor: pointer;
+}
+
+
+/* SECTION PRODUITS (colonne droite) */
+
+.products-section {
+    flex: 1; 
+}
+
+/* En-tête de la grille */
+.products-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.products-header h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #111;
+}
+
+.results-count {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* Grille des cartes produit */
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+
+/* CARTE PRODUIT */
+
+.product-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 220px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+}
+
+.product-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Conteneur de l'image (position relative pour le bouton coeur) */
+.product-image-container {
+    position: relative;
+}
+
+.product-image {
+    width: 100%;
+    display: block;
+    height: 200px;
+    object-fit: cover; 
+}
+
+/* Bouton favori (coeur) en haut à droite de l'image */
+.wishlist-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s;
+}
+
+.wishlist-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.wishlist-btn i {
+    width: 16px;
+    height: 16px;
+    color: #555;
+}
+
+/* Infos texte de la carte */
+.product-info {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Nom de la marque en petites lettres grises */
+.product-brand {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #888;
+    letter-spacing: 0.5px;
+}
+
+/* Nom du produit */
+.product-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111;
+}
+
+/* Prix */
+.product-price {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #111;
+    margin-top: 4px;
+}
