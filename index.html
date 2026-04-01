@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,12 +20,6 @@
 
 </head>
 <body>
-
-    <input type="text" id="myList" placeholder="Type something...">
-    <ul id="myList">
-    </ul>
-
-    <button id="myButton">Click me</button>
     <!-- BARRE DE NAVIGATION -->
     <nav class="navbar">
 
@@ -81,31 +75,48 @@
                 </div>
 
                 <!-- Filtre : Marques -->
-                <div class="filter-section">
+                <div class="filter-section brands-filter">
                     <h3 class="filter-title">
                         Brands
                         <i data-lucide="chevron-down"></i>
                     </h3>
                     <label class="filter-option">
-                        <input type="checkbox" checked>
-                        Brand Alpha
+                        <input type="checkbox" value="adidas">
+                        Adidas
                     </label>
                     <label class="filter-option">
-                        <input type="checkbox">
-                        Urban Co.
+                        <input type="checkbox" value="asics">
+                        Asics
                     </label>
                     <label class="filter-option">
-                        <input type="checkbox">
-                        Arctic Wear
+                        <input type="checkbox" value="converse">
+                        Converse
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" value="jordan">
+                        Jordan
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" value="newbalance">
+                        New Balance
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" value="nike">
+                        Nike
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" value="puma">
+                        Puma
                     </label>
                 </div>
 
                 <!-- Filtre : Tailles -->
-                <div class="filter-section">
+                <div class="filter-section sizes-filter">
                     <h3 class="filter-title">
                         Sizes
                         <i data-lucide="chevron-down"></i>
                     </h3>
+                    <div class="sizes-grid"></div>
                 </div>
 
             </aside>
@@ -116,39 +127,11 @@
                 <!-- En-tête de la grille -->
                 <div class="products-header">
                     <h2>All our shoes</h2>
-                    <span class="results-count">1,032 results</span>
+                    <span class="results-count" id="results-count">0 résultats</span>
                 </div>
 
-                <!-- Grille des cartes produit -->
-                <div class="product-grid">
-
-                    <!-- Carte produit -->
-                    <div class="product-card">
-
-                        <!-- Image du produit -->
-                        <div class="product-image-container">
-                            <img
-                                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
-                                alt="Image de chaussure rouge"
-                                class="product-image"
-                            >
-                            <!-- Bouton favori (coeur) -->
-                            <button class="wishlist-btn">
-                                <i data-lucide="heart"></i>
-                            </button>
-                        </div>
-
-                        <!-- Infos produit -->
-                        <div class="product-info">
-                            <span class="product-brand">RUNNER CO.</span>
-                            <h3 class="product-name">Speedster Red</h3>
-                            <span class="product-price">99.90 €</span>
-                        </div>
-
-                    </div>
-                    <!-- Fin carte produit -->
-
-                </div>
+                <!-- Grille des cartes produit (remplie dynamiquement par script.js) -->
+                <div class="product-grid"></div>
                 <!-- Fin grille -->
 
             </section>

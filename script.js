@@ -1,200 +1,174 @@
-// console.log("Hello world");
+let tousLesProduits = [];
+let genreActif = "";
+const myUrl = "https://makerslab.em-lyon.com/dww/data/products.json";
 
-const MyName = "Alexis";
+// Fonction pour récupérer les données depuis l'URL, avec gestion des erreurs
+const getData = async (doStuffs) => {
+    try {
+        const response = await fetch(myUrl);
+        if (!response.ok) {
+            throw new Error("Network response not ok :" + response.statusText);
+        }
+        const data = await response.json();
+        doStuffs(data);
+    } catch (error) {
+        console.error("Problem occurend while getting your data" + error);
+    }
+};
 
-let MyAge = 23;
-// litteral template : ``
-// console.log(`${MyName} is ${MyAge} years old.`);
+// On récupère les données et on initialise l'affichage et les filtres
+getData((data) => {
+    // On parcourt chaque nom de marque (chaque clé) dans notre objet
+    for (let nomMarque in data.items) {
+        // On récupère le tableau des produits qui correspond à cette marque
+        let listeProduits = data.items[nomMarque];
+        // On passe sur chaque produit de cette liste un par un
+        listeProduits.forEach((produit) => {
+            // On lui ajoute une étiquette avec le nom de sa marque
+            produit.brandKey = nomMarque;
+            // On l'ajoute à notre tableau global qui regroupe tout
+            tousLesProduits.push(produit);
+        });
+    }
+    // Affiche tous les produits au chargement de la page
+    afficherProduits(tousLesProduits);
 
-// if (MyAge >= 18) {
-//     console.log(`${MyName} is an adult.`);
-// } else {
-//     console.log(`${MyName} is a minor.`);
-// }   
+    // On prépare un tableau vide pour stocker nos tailles
+    let toutesLesTailles = [];
+    // On parcourt tous les produits un par un
+    tousLesProduits.forEach((produit) => {
 
-// if (MyName === "Alexis") {
-//     console.log("Hello Alexis!");
-// } else {
-//     console.log("Hello stranger!");
-// }
+        // On vérifie que le produit a bien des disponibilités renseignées
+        if (produit.availability) {
 
-const Fruits = ["apple", "banana", "cherry", "date", "elderberry"];
-// console.log(Fruits[0]); // apple
-// console.log(Fruits[4]); // elderberry
+            // On parcourt les disponibilités de ce produit en particulier
+            produit.availability.forEach((dispo) => {
+                let taille = dispo.size;
 
-// Fruits.push("fig");
-// console.log(Fruits); // ["apple", "banana", "cherry", "date", "elderberry", "fig"]
+                // Si notre tableau final ne contient pas encore cette taille, on l'ajoute
+                if (!toutesLesTailles.includes(taille)) {
+                    toutesLesTailles.push(taille);
+                }
+            });
+        }
+    });
 
-// Fruits.forEach((fruit) => {
-//     console.log(fruit);
-// });
-
-// const fruit = {
-//     name: "apple",
-//     color: "red",
-//     weight: 150,
-//     isRipe: true,   
-// };
-
-// console.log(fruit.name); // apple
-// console.log(fruit.color); // red
-// console.log(fruit.weight); // 150
-// console.log(fruit.isRipe); // true      
-// const SayHello = (name, age) => {
-//     console.log(`Hello, ${name}! You are ${age} years old.`);
-// };
-// SayHello("Alice", 30); // Hello, Alice! You are 30 years old.
-
-// DOM manipulation
-// const target = document.querySelector("h3");
-// target.innerHTML = "Hello JavaScript!"; // Change the content of the h3 element
-// const targets = document.querySelectorAll("h3");
-// console.log(targets); // NodeList of all h3 elements
-// targets[0].style.color = "red"; // Change the color of the first h3 element to red
-
-// Event listener
-// const myButton = document.querySelector("button");
-
-// myButton.addEventListener("click", () => {
+    // On trie notre tableau de tailles par ordre croissant
+    toutesLesTailles.sort((a, b) => a - b);
     
-//     const body = document.querySelector("body");
-//     body.style.backgroundColor = "lightblue"; // Change the background color of the page 
-// });
+    // On crée les éléments HTML pour chaque taille et on les remplit
+    const sizesGrid = document.querySelector(".sizes-grid");
 
-// const myButton = document.querySelector("button");
+    toutesLesTailles.forEach((taille) => {
+        // On crée l'élément label
+        const label = document.createElement("label");
+        label.className = "filter-option size-option";
+        label.innerHTML = `<input type="checkbox" value="${taille}"> ${taille}`;
+        
+        // On ajoute ce label à la grille des tailles
+        sizesGrid.appendChild(label);
 
-// myButton.addEventListener("click", () => {
-//     // get the message from the input field
-//     const message = document.querySelector("input");
-//     console.log(message.value);
+        // On ajoute un écouteur sur la case à cocher de ce label pour appliquer les filtres à chaque changement
+        const caseACocher = label.querySelector("input");
+        caseACocher.addEventListener("change", appliquerFiltres);
+    });
 
-//     // add the message to the list of suggestions
-//     const list = document.querySelector("ul");
-//     const listItem = document.createElement("li");
-//     listItem.textContent = message.value;
-//     list.appendChild(listItem);
-    
-//     // clear the input field
-//     message.value = "";
-// });
+    // Ajout des écouteurs sur les filtres
+    document.querySelectorAll(".brands-filter input").forEach(cb => {
+        cb.addEventListener("change", appliquerFiltres);
+    });
+    // Ajout des écouteurs sur les options de tri
+    document.querySelectorAll('input[name="sort"]').forEach(radio => {
+        radio.addEventListener("change", appliquerFiltres);
+    });
+    // Ajout des écouteurs sur les liens de navigation
+    document.querySelectorAll(".nav-links li").forEach(lien => {
+        lien.addEventListener("click", () => {
+            document.querySelectorAll(".nav-links li").forEach(l => l.classList.remove("active"));
+            lien.classList.add("active");
+            // On met à jour le genre actif en fonction du lien cliqué
+            const texte = lien.textContent;
+            if (texte === "Men") genreActif = "MEN";
+            else if (texte === "Women") genreActif = "WOMEN";
+            else genreActif = ""; // On a rien pour Kids ni pour Deals, donc on affiche tout
+            // On applique les filtres à chaque clic sur un lien de navigation
+            appliquerFiltres();
+        });
+    });
 
+});
 
-[
-  {
-    "event_name": "Trail des Alpes de Toulouse",
-    "images": [
-      "https://plus.unsplash.com/premium_photo-1664300158559-35de2ebdd9d1?q=80&w=2070&auto=format&fit=crop…",
-      "https://images.unsplash.com/photo-1504025468847-0e438279542c?q=80&w=2469&auto=format&fit=crop&ixlib…"
-    ],
-    "event_type": "trail",
-    "date": "4 avril 2026",
-    "location": "46.716,1.108,13",
-    "city": "Toulouse",
-    "department": "31",
-    "registrations": {
-      "opening": {
-        "date": "15 janvier 2026",
-        "time": "12:00"
-      },
-      "closing": {
-        "date": "25 mars 2026",
-        "time": "23:59"
-      }
-    },
-    "description": "Un événement trail accessible à tous, avec plusieurs distances et des paysages variés.",
-    "races": [
-      {
-        "name": "Trail 10 km",
-        "distance": "10",
-        "elevation_gain": "389",
-        "start_time": "09:00",
-        "price": "15"
-      },
-      {
-        "name": "Trail 30 km",
-        "distance": "30",
-        "elevation_gain": "845",
-        "start_time": "08:00",
-        "price": "32"
-      }
-    ]
-  },
-  {
-    "event_name": "Trail des Forêts de Dijon",
-    "images": [
-      "https://images.unsplash.com/photo-1623390003553-4fa3f9fceb89?q=80&w=2070&auto=format&fit=crop&ixlib…",
-      "https://images.unsplash.com/photo-1588038265723-9bd2a2b03a82?q=80&w=2069&auto=format&fit=crop&ixlib…"
-    ],
-    "event_type": "trail",
-    "date": "31 mai 2026",
-    "location": "44.429,4.28,13",
-    "city": "Dijon",
-    "department": "21",
-    "registrations": {
-      "opening": {
-        "date": "15 janvier 2026",
-        "time": "12:00"
-      },
-      "closing": {
-        "date": "21 mai 2026",
-        "time": "23:59"
-      }
-    },
-    "description": "Un événement trail accessible à tous, avec plusieurs distances et des paysages variés.",
-    "races": [
-      {
-        "name": "Trail 10 km",
-        "distance": "10",
-        "elevation_gain": "341",
-        "start_time": "09:00",
-        "price": "19"
-      },
-      {
-        "name": "Trail 30 km",
-        "distance": "30",
-        "elevation_gain": "1431",
-        "start_time": "08:00",
-        "price": "37"
-      }
-    ]
-  },
-  {
-    "event_name": "Trail des Lacs de Lyon",
-    "images": [
-      "https://images.unsplash.com/photo-1699959560616-aa17ace76879?q=80&w=2128&auto=format&fit=crop&ixlib…",
-      "https://plus.unsplash.com/premium_photo-1661899159300-fd541b7b1efb?q=80&w=987&auto=format&fit=crop&…"
-    ],
-    "event_type": "trail",
-    "date": "19 mai 2026",
-    "location": "44.118,5.241,13",
-    "city": "Lyon",
-    "department": "69",
-    "registrations": {
-      "opening": {
-        "date": "15 janvier 2026",
-        "time": "12:00"
-      },
-      "closing": {
-        "date": "9 mai 2026",
-        "time": "23:59"
-      }
-    },
-    "description": "Un événement trail accessible à tous, avec plusieurs distances et des paysages variés.",
-    "races": [
-      {
-        "name": "Trail 10 km",
-        "distance": "10",
-        "elevation_gain": "436",
-        "start_time": "09:00",
-        "price": "20"
-      },
-      {
-        "name": "Trail 25 km",
-        "distance": "25",
-        "elevation_gain": "884",
-        "start_time": "08:00",
-        "price": "29"
-      }
-    ]
-  }
-]
+// Fonction pour afficher une liste de produits dans la grille, et mettre à jour le compteur de résultats
+const afficherProduits = (liste) => {
+    const grille = document.querySelector(".product-grid");
+    const compteur = document.getElementById("results-count");
+    // On vide la grille avant d'afficher les produits (sinon on les empile à chaque fois)
+    grille.innerHTML = "";
+    // On crée une carte pour chaque produit et on l'ajoute à la grille
+    liste.forEach((produit) => {
+        const carte = document.createElement("div");
+        carte.className = "product-card";
+        const taillesDisponibles = produit.availability
+            ? produit.availability
+                .filter(a => a.quantity > 0)
+                .map(a => `<span class="size-badge">${a.size}</span>`)
+                .join('')
+            : '';
+        carte.innerHTML = `
+            <div class="product-image-container">
+                <img src="${produit.image}" alt="${produit.name}" class="product-image">
+                <button class="wishlist-btn">
+                    <i data-lucide="heart"></i>
+                </button>
+            </div>
+            <div class="product-info">
+                <span class="product-brand">${produit.brand}</span>
+                <h3 class="product-name">${produit.name}</h3>
+                <span class="product-price">${produit.price.toFixed(2)} €</span>
+                ${taillesDisponibles ? `<div class="product-sizes">${taillesDisponibles}</div>` : ''}
+            </div>
+        `;
+        grille.appendChild(carte);
+    });
+    // Mise à jour du compteur de résultats
+    compteur.textContent = `${liste.length} résultats`;
+    lucide.createIcons();
+};
+
+// Fonction pour appliquer les filtres sélectionnés et afficher les produits correspondants
+const appliquerFiltres = () => {
+    let resultat = tousLesProduits;
+
+    // Filtre par genre (Men / Women) si c'est Kids ou Deals on affiche tout, donc genreActif = "")
+    if (genreActif !== "") {
+        resultat = resultat.filter(p => p.gender === genreActif);
+    }
+
+    // Filtre par marques cochées (si aucune cochée on affiche tout)
+    const marquesChoisies = Array.from(document.querySelectorAll(".brands-filter input:checked"))
+        .map(cb => cb.value);
+    // Si au moins une marque est cochée, on filtre pour n'afficher que les produits de ces marques
+    if (marquesChoisies.length > 0) {
+        resultat = resultat.filter(p => marquesChoisies.includes(p.brandKey));
+    }
+
+    // Filtre par tailles cochées (si aucune cochée on affiche tout)
+    const taillesChoisies = Array.from(document.querySelectorAll(".sizes-filter input:checked"))
+        .map(cb => Number(cb.value));
+    // Si au moins une taille est cochée, on filtre pour n'afficher que les produits disponibles dans ces tailles
+    if (taillesChoisies.length > 0) {
+        resultat = resultat.filter(p =>
+            p.availability && p.availability.some(a => taillesChoisies.includes(a.size) && a.quantity > 0)
+        );
+    }
+
+    // Tri par prix selon l'option choisie (si aucune option choisie, on garde l'ordre d'origine)
+    const triSelectionne = document.querySelector('input[name="sort"]:checked').value;
+    if (triSelectionne === "low-high") {
+        resultat = [...resultat].sort((a, b) => a.price - b.price);
+    } else if (triSelectionne === "high-low") {
+        resultat = [...resultat].sort((a, b) => b.price - a.price);
+    }
+    // On affiche les produits résultants
+    afficherProduits(resultat);
+};
